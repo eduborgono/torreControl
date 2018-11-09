@@ -1,0 +1,112 @@
+syntax = 'proto3';
+
+message  NuevoAvionRequest{
+    string vuelo = 1;
+    string linea = 2;
+    string destino = 3;
+    int32 peso = 4;
+    int32 combustible = 5;
+}
+
+message NuevoAvionResponse{
+    string direccion = 1;
+}
+
+//----------------------------------------------------
+
+message PermisoRequest{
+    string vuelo = 1;
+    int32 pasajeros = 2;
+    int32 combustible = 3;
+}
+
+message PermisoResponse{
+    bool permiso = 1;
+}
+
+//----------------------------------------------------
+
+message InstruccionesRequest{
+    string vuelo = 1;
+}
+
+message InstruccionesResponse{
+    bool pistasOcupadas = 1;
+    string avionPrevio = 2;
+    int32 pista = 3;
+    int32 altura = 4;
+}
+
+//----------------------------------------------------
+
+message ColaRequest{
+    int32 pista = 1;
+}
+
+message ColaResponse{
+    string cabezaCola = 1;
+}
+
+//----------------------------------------------------
+
+message DespegueRequest{
+    string vuelo = 1;
+    int32 pista = 2;
+}
+
+message DespegueResponse{
+
+}
+
+//----------------------------------------------------
+
+
+// Aterrizaje
+message  AterrizajeRequest{
+    string vuelo = 1;
+    string linea = 2;
+    string origen = 3;
+}
+
+message At_InstruccionesResponse{
+    bool pistasOcupadas = 1;
+    string avionPrevio = 2;
+    int32 pista = 3;
+    int32 altura = 4;
+}
+
+//----------------------------------------------------
+
+message At_ColaRequest{
+    int32 pista = 1;
+}
+
+message At_ColaResponse{
+    string cabezaCola = 1;
+}
+
+//----------------------------------------------------
+
+message AterrizarRequest {
+    string vuelo = 1;
+    int32 pista =2;
+}
+
+message AterrizarResponse {
+
+}
+
+//----------------------------------------------------
+
+// service
+service Servicio{
+    rpc ConsultarDestino(NuevoAvionRequest) returns (NuevoAvionResponse) {}
+    rpc PedirPermiso(PermisoRequest) returns (PermisoResponse) {}
+    rpc PedirInstrucciones(InstruccionesRequest) returns (InstruccionesResponse) {}
+    rpc VerificarCola(ColaRequest) returns (ColaResponse) {}
+    rpc AvisarDespegue(DespegueRequest) returns (DespegueResponse) {}
+    //
+    rpc Atterizar(AterrizajeRequest) returns (At_InstruccionesResponse) {}
+    rpc VerificarCola_At(At_ColaRequest) returns (At_ColaResponse) {}
+    rpc AvisarAterrizaje(AterrizarRequest) returns (AterrizarResponse) {}
+}
