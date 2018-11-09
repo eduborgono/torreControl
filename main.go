@@ -154,9 +154,10 @@ func (s *server) Atterizar(ctx context.Context, in *pb.AterrizajeRequest) (*pb.A
 	var avionPrevio string
 	s.aero.muxAte.Lock()
 	defer s.aero.muxAte.Unlock()
-
+	s.aero.print("Nuevo avión en el aeropuerto.")
+	s.aero.print("Asignando pista de aterrizaje...")
 	for i, pista := range s.aero.pistaAte {
-		fmt.Println(pista)
+
 		if len(pista) == 0 {
 			pistasOcupadas = false
 			pistaSelec = i
@@ -172,6 +173,8 @@ func (s *server) Atterizar(ctx context.Context, in *pb.AterrizajeRequest) (*pb.A
 	if pistasOcupadas {
 		s.aero.print("Todas las pistas ocupadas, enconlando avion.")
 	}
+
+	s.aero.print("La pista de aterrizaje asignada es la " + strconv.Itoa(pistaSelec))
 
 	alturaAvion := s.aero.nuevaAltura()
 	resultado := &pb.At_InstruccionesResponse{
