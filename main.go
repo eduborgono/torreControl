@@ -260,16 +260,20 @@ func (instancia *aeropuerto) print(str string) {
 }
 
 func (instancia *aeropuerto) configurarAeropuerto() {
+	separador := "\n"
+	if runtime.GOOS == "windows" {
+		separador = "\r\n"
+	}
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Bienvenido a la Torre de control")
 
 	fmt.Println("[Torre de control] Nombre del Aeropuerto:")
 	text, _ := reader.ReadString('\n')
-	instancia.nombre = strings.Replace(text, "\r\n", "", -1)
+	instancia.nombre = strings.Replace(text, separador, "", -1)
 
 	fmt.Println("[Torre de control - " + instancia.nombre + "] Cantidad de pistas de aterrizaje:")
 	text, _ = reader.ReadString('\n')
-	cantPistasAte, _ := strconv.Atoi(strings.Replace(text, "\r\n", "", -1))
+	cantPistasAte, _ := strconv.Atoi(strings.Replace(text, separador, "", -1))
 	instancia.pistaAte = make([][]*avion, cantPistasAte)
 	for i := 0; i < cantPistasAte; i++ {
 		instancia.pistaAte[i] = make([]*avion, 0)
@@ -277,7 +281,7 @@ func (instancia *aeropuerto) configurarAeropuerto() {
 
 	fmt.Println("[Torre de control - " + instancia.nombre + "] Cantidad de pistas de despegue:")
 	text, _ = reader.ReadString('\n')
-	cantPistasDes, _ := strconv.Atoi(strings.Replace(text, "\r\n", "", -1))
+	cantPistasDes, _ := strconv.Atoi(strings.Replace(text, separador, "", -1))
 	instancia.pistaDes = make([][]*avion, cantPistasDes)
 	for i := 0; i < cantPistasDes; i++ {
 		instancia.pistaDes[i] = make([]*avion, 0)
@@ -288,6 +292,10 @@ func (instancia *aeropuerto) configurarAeropuerto() {
 }
 
 func (instancia *aeropuerto) addDestinos() {
+	separador := "\n"
+	if runtime.GOOS == "windows" {
+		separador = "\r\n"
+	}
 	re, _ := regexp.Compile(`(.+)\s((?:\d+\.)+\d+)`)
 	reader := bufio.NewReader(os.Stdin)
 	for {
@@ -299,7 +307,7 @@ func (instancia *aeropuerto) addDestinos() {
 
 		fmt.Println("[Torre de control - " + instancia.nombre + "]  Ingrese nombre y direccion IP del destino (o \"fin\"):")
 		text, _ := reader.ReadString('\n')
-		text = strings.Replace(text, "\r\n", "", -1)
+		text = strings.Replace(text, separador, "", -1)
 		if text != "fin" {
 			result := re.FindStringSubmatch(text)
 			if len(result) == 3 {
