@@ -10,17 +10,18 @@ En windows puede ser necesario crear la carpeta
 ```
 %USERPROFILE%\go 
 ```
-y añadir una variable de entorno llamada GOPATH con valor 
+y añadir una variable de entorno llamada ```GOPATH``` con valor 
 ```
 %USERPROFILE%\go
 ```
 si es que no fuera creada con el instalador. 
 
-# Instalación Torre Control
+# Instalación Torre de Control
 Se debe correr el comando
 ```
 go get github.com/eduborgono/torreControl
 ```
+# Ejecución Torre de Control
 ### Windows
 ```
 cd %USERPROFILE%\go\bin
