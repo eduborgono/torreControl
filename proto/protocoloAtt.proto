@@ -10,6 +10,7 @@ message  NuevoAvionRequest{
 
 message NuevoAvionResponse{
     string direccion = 1;
+    string origen = 2;
 }
 
 //----------------------------------------------------
@@ -98,6 +99,39 @@ message AterrizarResponse {
 
 //----------------------------------------------------
 
+//Pantalla
+message ConsultaPistasTorre {
+
+}
+
+message RespuestaPistasTorre {
+    int32 pistasAterrizaje = 1;
+    int32 pistasDespegue = 2;
+    string torre = 3;
+}
+
+//----------------------------------------------------
+
+message ConsultaPistaDespegue {
+    int32 pista = 1;
+}
+
+message RespuestaPistaDespegue {
+    string vuelo = 1;
+    string destino = 2;
+}
+
+//----------------------------------------------------
+
+message ConsultaPistaAterrizaje {
+    int32 pista = 1;
+}
+
+message RespuestaPistaAterrizaje {
+    string vuelo = 1;
+    string origen = 2;
+}
+
 // service
 service Servicio{
     rpc ConsultarDestino(NuevoAvionRequest) returns (NuevoAvionResponse) {}
@@ -109,4 +143,8 @@ service Servicio{
     rpc Atterizar(AterrizajeRequest) returns (At_InstruccionesResponse) {}
     rpc VerificarCola_At(At_ColaRequest) returns (At_ColaResponse) {}
     rpc AvisarAterrizaje(AterrizarRequest) returns (AterrizarResponse) {}
+    //
+    rpc PantallaInit(ConsultaPistasTorre) returns (RespuestaPistasTorre) {}
+    rpc PantallaDespegue(ConsultaPistaDespegue) returns (RespuestaPistaDespegue) {}
+    rpc PantallaAterrizaje(ConsultaPistaAterrizaje) returns (RespuestaPistaAterrizaje) {}
 }

@@ -65,7 +65,7 @@ func main() {
 func (s *server) ConsultarDestino(ctx context.Context, in *pb.NuevoAvionRequest) (*pb.NuevoAvionResponse, error) {
 	s.aero.avionesNuevos[in.Vuelo] = &avion{aerolinea: in.Linea, vuelo: in.Vuelo, destino: in.Destino, altura: 0, pesoMax: in.Peso, gasMin: in.Combustible}
 	s.aero.print("Avión " + in.Vuelo + " quiere despegar")
-	s.aero.print("Consultando destino...")
+	s.aero.print("Consultando destino... " + in.Destino)
 	direccion, exist := s.aero.destinos[strings.ToLower(in.Destino)]
 	if exist {
 		s.aero.print("Enviando dirección de " + in.Destino + ".")
@@ -73,19 +73,24 @@ func (s *server) ConsultarDestino(ctx context.Context, in *pb.NuevoAvionRequest)
 		s.aero.print("No existe ese destino.")
 		direccion = "No existe"
 	}
-	return &pb.NuevoAvionResponse{Direccion: direccion}, nil
+	return &pb.NuevoAvionResponse{Direccion: direccion, Origen: s.aero.nombre}, nil
 }
 
 func (s *server) PedirPermiso(ctx context.Context, in *pb.PermisoRequest) (*pb.PermisoResponse, error) {
-	s.aero.print("Consultado restricciones de pasajeros y combustible.")
+
 	var permisoPeso, permisoCombustible bool = false, false
+	strCombustible := " No tiene combustible suficiente."
+	strPersonas := " Tiene exceso de peso."
 	avion := s.aero.avionesNuevos[in.Vuelo]
 	if in.Combustible >= avion.gasMin {
 		permisoCombustible = true
+		strCombustible = ""
 	}
 	if in.Pasajeros <= avion.pesoMax {
 		permisoPeso = true
+		strPersonas = ""
 	}
+	s.aero.print("Consultado restricciones de pasajeros y combustible." + strCombustible + strPersonas)
 	return &pb.PermisoResponse{Permiso: permisoPeso && permisoCombustible}, nil
 }
 
@@ -214,6 +219,28 @@ func (s *server) AvisarAterrizaje(ctx context.Context, in *pb.AterrizarRequest) 
 		}
 	}
 	return &pb.AterrizarResponse{}, nil
+}
+
+func (s *server) PantallaInit(ctx context.Context, in *pb.ConsultaPistasTorre) (*pb.RespuestaPistasTorre, error) {
+	return &pb.RespuestaPistasTorre{PistasAterrizaje: int32(len(s.aero.pistaAte)), PistasDespegue: int32(len(s.aero.pistaDes)), Torre: s.aero.nombre}, nil
+}
+
+func (s *server) PantallaDespegue(ctx context.Context, in *pb.ConsultaPistaDespegue) (*pb.RespuestaPistaDespegue, error) {
+	var nombre, destino string = "", ""
+	if len(s.aero.pistaDes[in.Pista]) != 0 {
+		nombre = s.aero.pistaDes[in.Pista][0].vuelo
+		destino = s.aero.pistaDes[in.Pista][0].destino
+	}
+	return &pb.RespuestaPistaDespegue{Vuelo: nombre, Destino: destino}, nil
+}
+
+func (s *server) PantallaAterrizaje(ctx context.Context, in *pb.ConsultaPistaAterrizaje) (*pb.RespuestaPistaAterrizaje, error) {
+	var nombre, origen string = "", ""
+	if len(s.aero.pistaAte[in.Pista]) != 0 {
+		nombre = s.aero.pistaAte[in.Pista][0].vuelo
+		origen = s.aero.pistaAte[in.Pista][0].destino
+	}
+	return &pb.RespuestaPistaAterrizaje{Vuelo: nombre, Origen: origen}, nil
 }
 
 func horaMinSec() string {
