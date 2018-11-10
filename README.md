@@ -1,4 +1,4 @@
-# Tarea 2 Sistemas Distribuidos
+# Tarea 2 Sistemas Distribuidos. Torre de Control
 |Nombre| Rol|
 |-----|-----|
 |Eduardo Borgoño| 201373525-8 |    
