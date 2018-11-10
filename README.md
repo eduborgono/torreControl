@@ -1,3 +1,14 @@
+# Tarea 2 Sistemas Distribuidos
+|Nombre| Rol|
+|-----|-----|
+|Eduardo Borgoño| 201373525-8 |    
+|Francisca Ramírez| 201373607-6 |
+
+[Avión](https://github.com/eduborgono/distribuidos-avion) 
+
+[Pantalla de información](https://github.com/eduborgono/pantalla-informacion) 
+
+
 # Instalación GO
 Es necesario descargar go en su versión 1.11.2 https://golang.org/dl/ y tener instalado git.
 
